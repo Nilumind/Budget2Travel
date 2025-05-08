@@ -15,10 +15,14 @@ function PlaceCardItem({place}) {
     const data={
       textQuery:place.placeName
     }
-    const result=await GetPlaceDetails(data).then(resp=>{
-      const PhotoUrl=PHOTO_REF_URL.replace('{NAME}',resp.data.places[0].photos[3].name);
-      setPhotoUrl(PhotoUrl);
-    })
+    try{
+      const result=await GetPlaceDetails(data).then(resp=>{
+        const PhotoUrl=PHOTO_REF_URL.replace('{NAME}',resp.data.places[0].photos[3].name);
+        setPhotoUrl(PhotoUrl);
+      })
+    } catch{
+      console.error('Error fetching place details:', err.response?.data || err.message);
+    }
   }
 
   return (

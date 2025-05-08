@@ -10,17 +10,21 @@ function InfoSection({trip}) {
     trip&&GetPlacePhoto();
   },[trip])
 
-  const GetPlacePhoto=async()=>{
-    const data={
-      textQuery:trip?.userSelection?.location?.label
-    }
-    const result=await GetPlaceDetails(data).then(resp=>{
+  const GetPlacePhoto = async () => {
+    const data = {
+      textQuery: trip?.userSelection?.location?.label
+    };
+  
+    try {
+      const resp = await GetPlaceDetails(data);
       console.log(resp.data.places[0].photos[3].name);
-
-      const PhotoUrl=PHOTO_REF_URL.replace('{NAME}',resp.data.places[0].photos[3].name);
+  
+      const PhotoUrl = PHOTO_REF_URL.replace('{NAME}', resp.data.places[0].photos[3].name);
       setPhotoUrl(PhotoUrl);
-    })
-  }
+    } catch (error) {
+      console.error('Error fetching place photo:', err.response?.data || err.message);
+    }
+  };
   return (
     <div>
         <img src={photoUrl?photoUrl:'/placeholder.jpg'} className='h-[340px] w-full object-cover rounded-xl'/>

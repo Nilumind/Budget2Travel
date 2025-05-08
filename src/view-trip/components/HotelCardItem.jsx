@@ -9,17 +9,24 @@ function HotelCardItem({ hotel }) {
     hotel&&GetPlacePhoto();
   },[hotel])
 
-  const GetPlacePhoto=async()=>{
-    const data={
-      textQuery:hotel?.hotelName
+  const GetPlacePhoto = async () => {
+    const data = {
+      textQuery: hotel?.hotelName
+    };
+  
+    try {
+      const resp = await GetPlaceDetails(data);
+      const photos = resp.data.places[0]?.photos;
+  
+      if (photos && photos.length > 0) {
+        const photoName = photos[0].name;
+        const photoUrl = PHOTO_REF_URL.replace('{NAME}', photoName);
+        setPhotoUrl(photoUrl);
+      }
+    } catch (err) {
+      console.error('Error fetching place photo:', err.response?.data || err.message);
     }
-    const result=await GetPlaceDetails(data).then(resp=>{
-      console.log(resp.data.places[0].photos[3].name);
-
-      const PhotoUrl=PHOTO_REF_URL.replace('{NAME}',resp.data.places[0].photos[3].name);
-      setPhotoUrl(PhotoUrl);
-    })
-  }
+  };
     return (
         <Link to={'https://www.google.com/maps/search/?api=1&query=' + hotel.hotelName + "," + hotel?.hotelAddress} target='_blank' >
             <div className='hover:scale-105 transition-all cursor-pointer'>
