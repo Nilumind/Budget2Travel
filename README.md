@@ -1,3 +1,5 @@
+Budget2Travel is an innovative web application that makes travel planning easier. Users enter their budget, number of travellers, and destination. The system then generates a personalized travel schedule that balances cost and experience.
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
